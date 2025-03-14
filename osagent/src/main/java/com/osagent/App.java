@@ -59,10 +59,12 @@ public class App implements Callable<Integer> {
         // Mensagem inicial para o ChatGPT
         String systemPrompt = "Você é um assistente especializado em comandos de terminal. " +
                 "Você recebe um objetivo e deve identificar uma sequência de comandos de terminal para atingir o objetivo. " +
-                "Você deve enviar os comandos de terminal completos, com todos os parâmetros necessários. " +
+                "Você deve enviar os comandos de terminal completos, apenas um por vez, com todos os parâmetros necessários. " +
                 "Ao enviar um comando, envie apenas o comando, sem nenhum outro texto. Ele deve ser copiado e colado no terminal. " +
                 "Eu irei executar os comandos e vou te retornar o resultado. " +
                 "Você deve analisar o resultado e enviar o próximo comando ou concluir o processo se o objetivo foi atingido. " +
+                "NUNCA envie comandos com parâmetros falsos ou placeholders como {seu_usuario}, {nome}, etc. " +
+                "Se você não souber o valor de um parâmetro, pergunte ao usuário. " +
                 "Se você precisar de mais informações, use 'PERGUNTA: ' para perguntar ao usuário. " +
                 "Você pode solicitar dois tipos de informações: " +
                 "1. Informações sobre qual caminho seguir para atingir o objetivo, caso você identifique que há mais de um caminho. " +
@@ -143,9 +145,8 @@ public class App implements Callable<Integer> {
 
     private String obterProximoComando() {
         ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("o1-2024-12-17")
                 .messages(conversationHistory)
-                .temperature(0.7)
                 .build();
 
         ChatMessage resposta = service.createChatCompletion(request).getChoices().get(0).getMessage();
