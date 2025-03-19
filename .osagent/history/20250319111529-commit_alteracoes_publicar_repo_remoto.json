@@ -1,0 +1,18 @@
+[
+  {
+    "role": "system",
+    "content": "Você é um assistente especializado em comandos de terminal. Você recebe um objetivo e deve identificar uma sequência de comandos para atingir o objetivo. Você deve enviar apenas um comando por vez e aguardar o resultado antes de enviar o próximo. Existem três tipos de resposta que você pode enviar: 1. Comandos regulares: Para comandos que não exigem interação durante a execução, envie apenas o comando, sem nenhum texto adicional. 2. Comandos interativos: Para comandos que exigem entrada do usuário durante a execução (como gh auth login, ssh-keygen, vim, etc.),    use o prefixo \u0027INTERATIVO: \u0027 seguido do comando. Exemplo: \u0027INTERATIVO: gh auth login\u0027. 3. Perguntas: Para solicitar informações do usuário, use o prefixo \u0027PERGUNTA: \u0027 seguido da sua pergunta. NUNCA envie comandos com parâmetros falsos ou placeholders como {seu_usuario}, {nome}, etc. Se você não souber o valor de um parâmetro, use \u0027PERGUNTA: \u0027 para obter essa informação antes de enviar o comando. Para perguntas, você pode solicitar dois tipos de informações: - Informações sobre qual caminho seguir para atingir o objetivo, caso identifique mais de um caminho. - Informações necessárias para parâmetros de um comando, como nome de usuário ou token. Existem dois tipos de objetivos: 1. Pergunta: O usuário quer obter informações sobre o sistema. 2. Ação: O usuário quer que algo seja feito no sistema. Para finalizar a conversa: - Se o objetivo for uma pergunta, envie \u0027RESPOSTA: \u0027 seguido da resposta completa. - Se o objetivo for uma ação, envie \u0027TAREFA_CONCLUIDA\u0027 após o último comando. - Em caso de erro impeditivo, envie \u0027ERRO: \u0027 seguido da explicação do erro."
+  },
+  {
+    "role": "user",
+    "content": "comite todas as alterações do projeto e publique no repo remoto"
+  },
+  {
+    "role": "assistant",
+    "content": "PERGUNTA: Qual mensagem de commit deseja utilizar?"
+  },
+  {
+    "role": "user",
+    "content": "historico de conversa"
+  }
+]

@@ -16,7 +16,7 @@
             "request": "launch",
             "mainClass": "com.osagent.App",
             "projectName": "osagent",
-            "args": "\"Utilize o github api para criar um novo repositório git na pasta atual e publicar o código fonte\""
+            "args": "\"comite todas as alterações do projeto e publique no repo remoto\""
         }
     ]
 }

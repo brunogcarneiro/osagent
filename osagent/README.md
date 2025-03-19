@@ -25,6 +25,16 @@ O OSAgent é uma ferramenta de linha de comando que utiliza o ChatGPT para auxil
   - Suporta regras e comportamentos customizados
   - Ideal para adaptar o assistente a necessidades específicas
 
+- **Histórico de Conversas**:
+  - Salva automaticamente o histórico de cada conversa em formato JSON
+  - Permite continuar conversas anteriores a partir de qualquer ponto
+  - Organiza os históricos com nomes descritivos baseados no conteúdo
+
+- **Comandos Interativos**:
+  - Suporte a comandos que exigem interação do usuário durante a execução
+  - Fornece aviso claro antes de executar comandos interativos
+  - Permite interação direta com ferramentas como vim, ssh-keygen, gh auth, etc.
+
 ## Pré-requisitos
 
 - Java 17 ou superior
@@ -128,6 +138,17 @@ osagent --help
 
 # Para usar instruções personalizadas
 osagent -i /caminho/para/instrucoes.txt "sua pergunta ou tarefa aqui"
+
+# Para continuar uma conversa anterior
+osagent -c
+
+# O programa irá mostrar uma lista numerada dos históricos disponíveis:
+# Históricos de conversa disponíveis:
+# 1. 20240315123045-gerenciamento_de_pacotes.json
+# 2. 20240315123512-backup_de_arquivos.json
+# 3. 20240315124030-limpeza_de_cache.json
+#
+# Digite o número do histórico que deseja carregar:
 ```
 
 ### Exemplos de Uso
@@ -159,6 +180,25 @@ echo "Sempre responda em português do Brasil" > instrucoes.txt
 osagent -i instrucoes.txt "what is the current memory usage?"
 ```
 
+5. **Continuando conversas anteriores**:
+```bash
+# Iniciar uma conversa
+osagent "como funciona o gerenciamento de pacotes neste sistema?"
+
+# Continuar a mesma conversa mais tarde
+osagent -c ./.osagent/history/20240315123045-gerenciamento_de_pacotes.json "como atualizar todos os pacotes?"
+```
+
+6. **Comandos interativos**:
+```bash
+# Configurar autenticação GitHub
+osagent "configurar acesso ao GitHub CLI"
+
+# Quando o assistente precisar usar um comando interativo, ele mostrará:
+# ATENÇÃO: O comando 'gh auth login' é interativo e requer sua entrada durante a execução.
+# Deseja executar este comando interativamente? (s/n)
+```
+
 ### Formato das Instruções Personalizadas
 
 O arquivo de instruções pode conter qualquer texto que você queira adicionar ao prompt do sistema. Por exemplo:
@@ -169,12 +209,41 @@ Use termos técnicos simplificados
 Forneça exemplos práticos quando possível
 ```
 
+### Gerenciamento de Histórico
+
+O OSAgent armazena automaticamente o histórico de todas as conversas em arquivos JSON organizados na pasta `.osagent/history/` dentro do diretório atual. Se esta pasta não existir, ela será criada automaticamente na primeira execução. Os arquivos de histórico são nomeados seguindo o padrão:
+
+```
+[TIMESTAMP]-[DESCRIÇÃO].json
+```
+
+Onde:
+- `TIMESTAMP` é uma marca de data/hora no formato yyyyMMddHHmmss
+- `DESCRIÇÃO` é uma breve descrição da conversa gerada automaticamente
+
+Para continuar uma conversa, use a opção `-c` sem especificar um arquivo. O programa irá mostrar uma lista numerada dos históricos disponíveis e pedir para você escolher qual deseja carregar:
+
+```bash
+osagent -c
+
+# O programa irá mostrar uma lista numerada dos históricos disponíveis:
+# Históricos de conversa disponíveis:
+# 1. 20240315123045-gerenciamento_de_pacotes.json
+# 2. 20240315123512-backup_de_arquivos.json
+# 3. 20240315124030-limpeza_de_cache.json
+#
+# Digite o número do histórico que deseja carregar:
+```
+
+Após escolher o histórico, você poderá continuar a conversa normalmente, e todas as novas mensagens serão salvas no mesmo arquivo de histórico.
+
 ## Limitações
 
 - Requer uma chave de API válida do OpenAI
 - Os comandos são executados no shell padrão do sistema
 - Alguns comandos podem requerer permissões específicas
 - O uso da API do OpenAI pode gerar custos
+- Comandos interativos têm um tempo limite de 30 segundos
 
 ## Contribuindo
 
